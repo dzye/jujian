@@ -1,0 +1,57 @@
+{
+  "manifest_version": 3,
+  "name": "句间 — 英文视频查词与生词本",
+  "version": "0.4.0",
+  "description": "在视频里，读懂每一句。支持 YouTube 与B站普通视频英文字幕学习、逐词和词组翻译、生词本、分 P 时间来源及手动遮挡。",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "action": {
+    "default_popup": "extension-panel.html",
+    "default_icon": {
+      "16": "assets/brand/icon-16.png",
+      "32": "assets/brand/icon-32.png",
+      "48": "assets/brand/icon-48.png",
+      "128": "assets/brand/icon-128.png"
+    },
+    "default_title": "句间 · 英文视频学习"
+  },
+  "commands": {
+    "toggle-mask": {
+      "suggested_key": {
+        "default": "Alt+Shift+H"
+      },
+      "description": "显示或隐藏字幕遮挡"
+    },
+    "toggle-edit": {
+      "suggested_key": {
+        "default": "Alt+Shift+E"
+      },
+      "description": "切换遮挡编辑与锁定"
+    }
+  },
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "host_permissions": [
+    "https://api.dictionaryapi.dev/*",
+    "https://api.mymemory.translated.net/*"
+  ],
+  "icons": {
+    "16": "assets/brand/icon-16.png",
+    "32": "assets/brand/icon-32.png",
+    "48": "assets/brand/icon-48.png",
+    "128": "assets/brand/icon-128.png"
+  },
+  "short_name": "句间",
+  "optional_host_permissions": [
+    "https://*/*"
+  ],
+  "options_ui": {
+    "page": "translation-settings.html",
+    "open_in_tab": true
+  },
+  "homepage_url": "https://github.com/dzye/jujian"
+}

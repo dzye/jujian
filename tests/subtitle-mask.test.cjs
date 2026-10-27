@@ -1,0 +1,21 @@
+const {chromium}=require('playwright');
+const fs=require('fs');
+(async()=>{
+const browser=await chromium.launch({headless:true,channel:"chrome"});const page=await browser.newPage({viewport:{width:1200,height:800}});
+await page.setContent('<div id="player" style="width:1000px;height:600px"><video style="width:1000px;height:600px"></video></div>');
+await page.evaluate(()=>{window.saved={};window.chrome={storage:{local:{get:async()=>saved,set:async data=>Object.assign(saved,data)}},runtime:{onMessage:{addListener(fn){window.handler=fn}}}};window.send=message=>new Promise(resolve=>handler(message,{},resolve));});
+await page.addScriptTag({content:fs.readFileSync('extension/subtitle-mask.js','utf8')});
+const send=msg=>page.evaluate(msg=>window.send(msg),msg);
+let s=await send({type:'toggle'});if(!s.enabled||!s.editing)throw Error('toggle');
+const mask=page.locator('#jujian-mask-extension').locator('.mask');await mask.waitFor({state:'visible'});
+const b=await mask.boundingBox();await page.mouse.move(b.x+b.width/2,b.y+b.height/2);await page.mouse.down();await page.mouse.move(b.x+b.width/2-100,b.y+b.height/2-40);await page.mouse.up();s=await send({type:'state'});if(s.x>=.18||s.y>=.82)throw Error('drag');
+const handle=page.locator('#jujian-mask-extension').locator('.se');const h=await handle.boundingBox();await page.mouse.move(h.x+6,h.y+6);await page.mouse.down();await page.mouse.move(h.x+56,h.y+26);await page.mouse.up();s=await send({type:'state'});if(s.w<=.64)throw Error('resize');
+await send({type:'update',opacity:.6,color:'#123456'});await page.waitForTimeout(200);if(await mask.evaluate(el=>el.style.opacity)!=='0.6')throw Error('opacity');
+await page.locator('#jujian-mask-extension').locator('#lock').click();await page.waitForTimeout(50);if(await mask.evaluate(el=>getComputedStyle(el).pointerEvents)!=='none')throw Error('click through');
+await page.keyboard.down('Alt');await page.waitForTimeout(50);if(await mask.evaluate(el=>el.style.opacity)!=='0')throw Error('peek');await page.keyboard.up('Alt');
+await page.evaluate(()=>document.getElementById('player').requestFullscreen());await page.waitForTimeout(100);if(!await page.evaluate(()=>document.fullscreenElement.contains(document.getElementById('jujian-mask-extension'))))throw Error('fullscreen');await page.evaluate(()=>document.exitFullscreen());
+await send({type:'reset'});await page.waitForTimeout(200);await page.screenshot({path:'dist/manual-mask-preview.png'});
+await send({type:'toggle'});await page.waitForTimeout(50);if(await page.locator('#jujian-mask-extension').isVisible())throw Error('hide');
+if(!await page.evaluate(()=>Object.keys(saved).length))throw Error('save');
+console.log('PASS: enable, drag, resize, opacity, lock/click-through, Alt peek, container fullscreen, reset, hide, storage');await browser.close();
+})().catch(e=>{console.error(e);process.exit(1)});

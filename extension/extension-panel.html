@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><link rel="stylesheet" href="vendor/tom-select/tom-select.default.min.css"><link rel="stylesheet" href="extension-panel.css"><title>句间设置</title></head><body>
+<header><img src="assets/brand/icon-128.png" alt="句间标志" width="36" height="36"><div><h1>句间</h1><p>在视频里，读懂每一句。</p></div><button id="notebook" class="text-button">生词本 ↗</button></header>
+<div class="tabs" role="tablist" aria-label="功能设置"><button id="tab-learning" role="tab" aria-selected="true" aria-controls="panel-learning" tabindex="0">字幕学习</button><button id="tab-mask" role="tab" aria-selected="false" aria-controls="panel-mask" tabindex="-1">手动遮挡</button></div>
+<main>
+<section id="panel-learning" role="tabpanel" aria-labelledby="tab-learning">
+<div class="section-intro"><span id="learning-status" class="status">字幕学习未开启</span><p id="learning-platform-hint">支持 YouTube 和B站普通视频页的独立英文字幕。</p></div><button id="learn" class="primary">开启英文字幕学习</button>
+<div id="track-picker" hidden><label for="subtitle-track">英文字幕轨道</label><select id="subtitle-track"></select></div><div class="settings-group"><h2>播放设置</h2><label class="switch-row" for="hoverPause"><span><strong>自动暂停</strong><small>鼠标移入字幕时暂停视频</small></span><input type="checkbox" role="switch" id="hoverPause" checked></label><label class="switch-row" for="autoResume"><span><strong>移出后继续播放</strong><small>仅恢复由插件自动暂停的视频</small></span><input type="checkbox" role="switch" id="autoResume" checked></label><p class="help">关闭自动暂停时，使用视频原有控件手动控制。</p></div>
+<div class="settings-group"><h2>字幕位置</h2><div class="row"><button id="subtitle-position">调整字幕位置</button><button id="subtitle-reset">复位</button></div><p class="help">开启调整后拖动字幕手柄，松开即锁定并隐藏。</p></div>
+<div class="settings-group"><h2>翻译服务</h2><div class="row"><span id="translation-summary" class="help">默认词典</span><button id="translation-config">管理翻译来源 ↗</button></div></div><button id="subtitle-refresh" class="text-button">重新读取字幕</button><p id="learning-note" class="inline-note" role="status"></p><p class="privacy">单击查词，拖选词组。默认仅发送所选内容；开启 AI 上下文解释后会附带当前句子。</p>
+</section>
+<section id="panel-mask" role="tabpanel" aria-labelledby="tab-mask" hidden>
+<div class="section-intro"><span id="status" class="status">遮挡已关闭</span><p>遮住视频中无法关闭的中文字幕。</p></div><button id="toggle" class="primary">开启遮挡</button><div class="row mask-actions"><button id="edit">调整位置与大小</button><button id="reset">重置</button></div>
+<div class="settings-group"><h2>遮挡外观</h2><label class="range-label" for="opacity">不透明度 <output id="value">95%</output></label><input id="opacity" type="range" min="0" max="100" value="95"><div class="colors"><label for="color">遮挡颜色</label><input id="color" type="color" value="#181818"></div></div>
+<p class="help">拖动遮挡条移动，拖动四角缩放；调整完成后锁定。</p><footer><span>显示 / 隐藏 <kbd>Alt ⇧ H</kbd></span><span>编辑 / 锁定 <kbd>Alt ⇧ E</kbd></span><small>锁定时，按住 Alt 临时查看中文。</small></footer>
+</section><p id="error" role="alert"></p>
+</main><script src="vendor/tom-select/tom-select.complete.min.js"></script><script src="extension-panel.js"></script></body></html>

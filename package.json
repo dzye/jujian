@@ -1,0 +1,14 @@
+{
+  "name": "jujian",
+  "version": "0.4.0",
+  "private": true,
+  "description": "English video vocabulary learning for YouTube and Bilibili",
+  "license": "UNLICENSED",
+  "scripts": {
+    "test": "node tools/test.cjs",
+    "package": "python3 tools/package.py"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}
